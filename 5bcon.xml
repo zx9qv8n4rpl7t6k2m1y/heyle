@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+<ModulePrefs title="classroom" />
+<Content type="html"><![CDATA[
+
+
+<html lang="en">
+ 
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+    <base href="https://cdn.jsdelivr.net/gh/bubbls/UGS-Assets@23edae6437a2cded4027d5c487fc9f6362e3ebfd/bacon%20may%20die/"
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta charset="utf-8" />
+
+    <!-- Set the title bar of the page -->
+    <title>Bacon May Die by SnoutUp </title>
+    <meta name="robots" content="noindex,nofollow" />
+    <script src="poki-sdk.js"></script>
+    <script></script>
+
+    <script>
+        var adsAreDisabled = true;
+    </script>
+    <script src="html5game/prebid/ads.js"></script>
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            background: #f3c2b5;
+            color: #cccccc;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+            overflow: hidden;
+
+            height: 100%;
+
+            background-color: #191923;
+
+            //background-image: url('html5game/wolf.gif');
+            background-image: url('html5game/bg.jpg');
+            background-repeat: repeat-x;
+            background-position: center center;
+            background-size: 0 0;
+        }
+
+        #bar {
+            position: fixed;
+            height: 56%;
+            width: 5px;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            margin: 0 auto;
+            padding: 3px;
+            background: #191923;
+            background-color: rgba(25, 25, 35, 0.5);
+            z-index: -9999;
+        }
+
+        img#spider {
+            position: absolute;
+            left: -67px;
+            bottom: -30px;
+
+        }
+
+        #fill {
+            position: relative;
+            height: 1%;
+            background: #a4a6b5;
+            width: 5px;
+            margin: 0px;
+        }
+
+
+        img.torch {
+            position: fixed;
+            height: 128px;
+            width: 128px;
+            top: 30%;
+            background: url('html5game/tbg.png') 50% 50% no-repeat;
+            background-size: 128px;
+        }
+
+
+
+
+        #t1 {
+            left: 20%;
+        }
+
+        #t2 {
+            right: 20%;
+        }
+
+        img#door {
+            position: fixed;
+            top: 35%;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            z-index: 10;
+            display: none;
+        }
+
+
+        canvas {
+            image-rendering: optimizeSpeed;
+            -webkit-interpolation-mode: nearest-neighbor;
+            -ms-touch-action: none;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+            display: none;
+        }
+
+        #canvas,
+        canvas {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        :-webkit-full-screen #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        div.gm4html5_div_class {
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+
+        .
+    </style>
+</head>
+
+<body id="body">
+    <div class="gm4html5_div_class" id="gm4html5_div_id">
+        <!-- Create the canvas element the game draws to -->
+        <canvas id="canvas" width="1024" height="576">
+            <p>Your browser doesn't support HTML5 canvas.</p>
+        </canvas>
+        <script type="text/javascript" src="html5game/BaconMayDie.js"></script>
+    </div>
+    <div id="bar">
+        <div id="fill"><img id="spider" alt="" src="html5game/spider.png"/></div>
+    </div>
+
+    <div id="decor">
+
+        <img class="torch" id="t1" src="html5game/torch.gif" alt=""/>
+        <img class="torch" id="t2" src="html5game/torch.gif" alt=""/>
+        <img id="door" alt="" src="html5game/door.png"/>
+    </div>
+
+    <script>
+        var sdk     = PokiSDK;
+    var pokiDebug   = false;
+        var canvas      = document.getElementById("canvas");
+    var body    = document.getElementById("body");
+    var bar     = document.getElementById("bar");
+    var fill    = document.getElementById("fill");
+
+    var decor     = document.getElementById("decor");   
+
+    var fakeCent    = 1;  
+    var fakeCentTarget  = 75;
+    var fails     = 0;
+    
+    function poki_log(t) {
+      console.log(t);
+    }
+            
+        function poki_debug() {
+            return pokiDebug;
+        }
+    
+    function poki_loading(progress) {
+      fakeCentTarget = Math.max(fakeCentTarget, progress * 100);
+      sdk.gameLoadingProgress({percentageDone: progress * 0.9});
+      
+      if (progress == 1) {
+        setTimeout(function () {
+                    clearInterval(fakeLoading);
+          bar.style.display     = "none";   
+          decor.style.display   = "none";
+          canvas.style.display  = "block";
+        }, 1000);
+      }
+    }
+    
+    function bar_update(progress) {
+      progress = Math.max(fakeCent, progress);
+      fill.style.height = progress + "%";
+    }
+    
+    var fakeLoading = setInterval(function() {
+        fakeCent = loading_lerp(fakeCent, fakeCentTarget, 0.05);
+        bar_update(fakeCent);             
+    }, 20);   
+    
+    
+    function gamemaker_start() {
+      try {
+        GameMaker_Init();
+      } catch(err) {
+        fails++;      
+        setTimeout(gamemaker_start, 5000);
+        if (fails == 1) throw(err);           
+      }
+    }
+
+    var bgScale = window.innerHeight / 1024;
+    body.style.backgroundSize = (512 * bgScale) + "px " + (1024 * bgScale) + "px";
+    
+    window.onload = function() {
+      sdk.init().then(() => {
+                setTimeout(gamemaker_start, adsAreDisabled ? 5000 : 1);
+                sdk.setDebug(pokiDebug);   
+        sdk.gameLoadingStart();   
+      }).catch(() => {
+                gamemaker_start();
+      });
+        
+            canvas.width  = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvas.addEventListener('click', function(){
+                window.focus();
+            });           
+
+
+      //document.getElementById("door").style.top= (300 * bgScale) + "px";
+      //document.getElementById("door").style.width = (bgScale * 100) +"%";
+      //document.getElementById("door").style.height = (bgScale * 100) +"%";
+    }
+    
+    window.addEventListener('wheel', ev => ev.preventDefault(), { passive: false });
+    window.addEventListener('keydown', ev => {
+      if (['ArrowDown', 'ArrowUp', ' '].includes(ev.key)) {
+        ev.preventDefault();
+      }
+    });   
+            
+                
+        /// smooth things out 
+        function loading_lerp (start, end, amt){
+            return (1 - amt) * start + amt * end;
+        }
+    </script>
+  
+<!-- Sticky Bottom Center Ad (728x90) with Smooth Slide-Out and Reappearance -->
+<style>
+  /* Container: Bottom center, fixed, with overflow hidden */
+  #ad-container {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(728px, calc(100% - 20px)); /* 728px, 10px margin on mobile */
+    height: 90px;
+    background: rgba(0, 0, 0, 0.90);
+    display: none;
+    z-index: 99999;
+    border-radius: 0; /* Sharp corners */
+    overflow: hidden;
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.45);
+    box-sizing: border-box;
+    transition: transform 0.5s ease-in-out; /* Smooth slide-in/out animation */
+  }
+
+  /* Slide-out animation */
+  #ad-container.hidden {
+    transform: translate(-50%, 100%); /* Slide down out of view */
+  }
+
+  #ad-iframe {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 745px; /* Updated width */
+    height: 90px; /* Updated height */
+    border: 0;
+    display: block;
+    overflow: hidden;
+    pointer-events: auto;
+    box-sizing: content-box;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  #ad-iframe::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* Close button with arrow */
+  #close-ad {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 5px 9px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: not-allowed;
+    opacity: 0.72;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+  }
+  #close-ad.enabled {
+    cursor: pointer;
+    opacity: 1;
+  }
+  #close-ad::before {
+    content: '↓'; /* Down arrow for bottom ad */
+    margin-right: 4px;
+  }
+
+  /* Right mask for scrollbar */
+  #ad-right-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
+    z-index: 99999;
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 440px) {
+    #ad-container {
+      width: calc(100% - 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 0; /* Sharp corners on mobile */
+    }
+    #ad-iframe {
+      width: 728px;
+    }
+  }
+</style>
+
+<div id="ad-container" aria-hidden="true" role="dialog" aria-label="Advertisement">
+  <iframe
+    id="ad-iframe"
+    src="https://script.google.com/macros/s/AKfycbxLG5DHBe-sIbduDvwQZYJ3oaX_ha7rsvroprCFkQsnpZK_PEdipNia5ghxI_sdXYpv/exec"
+    width="768px"
+    height="95px"
+    scrolling="no"
+    frameborder="0"
+    sandbox="allow-scripts allow-popups allow-same-origin"
+  ></iframe>
+  <button id="close-ad" disabled>Close (12)</button>
+  <div id="ad-right-mask"></div>
+</div>
+
+<script>
+  (function () {
+    const showDelay = 2000; // 2 seconds delay before first show
+    const countdownStart = 12; // 12 seconds countdown
+    const reappearDelay = 150000; // 25 seconds before reappearance
+    const adContainer = document.getElementById('ad-container');
+    const closeBtn = document.getElementById('close-ad');
+
+    function showAd() {
+      // Show ad with smooth slide-in
+      adContainer.style.display = 'block';
+      adContainer.classList.remove('hidden');
+      adContainer.setAttribute('aria-hidden', 'false');
+
+      // Start countdown
+      let timeLeft = countdownStart;
+      closeBtn.textContent = `Close (${timeLeft})`;
+      closeBtn.disabled = true;
+      closeBtn.classList.remove('enabled');
+
+      const t = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          closeBtn.textContent = `Close (${timeLeft})`;
+        } else {
+          clearInterval(t);
+          closeBtn.disabled = false;
+          closeBtn.classList.add('enabled');
+          closeBtn.textContent = 'Close ↓';
+        }
+      }, 1000);
+    }
+
+    // Initial ad show
+    setTimeout(showAd, showDelay);
+
+    // Close with animation and schedule reappearance
+    closeBtn.addEventListener('click', () => {
+      if (closeBtn.disabled) return;
+      adContainer.classList.add('hidden');
+      adContainer.setAttribute('aria-hidden', 'true');
+      // Schedule reappearance without removing or reloading iframe
+      setTimeout(showAd, reappearDelay);
+    });
+  })();
+</script>
+</body>
+
+</html>
+
+
+
+]]></Content>
+</Module>
